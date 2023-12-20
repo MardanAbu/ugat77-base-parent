@@ -7,4 +7,5 @@ import org.apache.ibatis.annotations.Param;
 
 public interface MemberMapper extends BaseMapper<Member> {
     int addMoney(@Param("parm") RechargeParm parm);
+    int subMoney(@Param("parm") RechargeParm parm);
 }

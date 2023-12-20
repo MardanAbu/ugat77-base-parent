@@ -1,4 +1,4 @@
-package com.ugat77.web.course.entity;
+package com.ugat77.web.member_course.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -8,10 +8,12 @@ import lombok.Data;
 import java.math.BigDecimal;
 
 @Data
-@TableName("course")
-public class Course {
+@TableName("member_course")
+public class MemberCourse {
     @TableId(type = IdType.AUTO)
+    private Long memberCourseId;
     private Long courseId;
+    private Long memberId;
     private Long teacherId;
     private String courseName;
     private String image;

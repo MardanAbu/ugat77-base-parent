@@ -7,4 +7,8 @@
         update member set money = money  +  #{parm.money} where
             member_id =#{parm.memberId}
     </update>
+    <update id="subMoney">
+        update member set money = money  -  #{parm.money} where
+            member_id =#{parm.memberId}
+    </update>
 </mapper>

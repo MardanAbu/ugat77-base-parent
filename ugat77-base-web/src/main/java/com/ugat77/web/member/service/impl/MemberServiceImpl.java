@@ -9,12 +9,16 @@ import com.ugat77.web.member.mapper.MemberMapper;
 import com.ugat77.web.member.service.MemberService;
 import com.ugat77.web.member_apply.entity.MemberApply;
 import com.ugat77.web.member_apply.mapper.MemberApplyMapper;
+import com.ugat77.web.member_apply.service.MemberApplyService;
 import com.ugat77.web.member_card.entity.MemberCard;
 import com.ugat77.web.member_card.mapper.MemberCardMapper;
+import com.ugat77.web.member_card.service.MemberCardService;
 import com.ugat77.web.member_recharge.entity.MemberRecharge;
 import com.ugat77.web.member_recharge.service.MemberRechargerService;
 import com.ugat77.web.member_role.entity.MemberRole;
 import com.ugat77.web.member_role.service.MemberRoleService;
+import com.ugat77.web.sys_user.entity.SysUser;
+import com.ugat77.web.sys_user.service.SysUserService;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -31,12 +35,14 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
 
     @Autowired
     private MemberRoleService memberRoleService;
-    @Resource
-    private MemberCardMapper memberCardMapper;
-    @Resource
-    private MemberApplyMapper memberApplyMapper;
-    @Resource
-    private MemberRechargerService memberRechargeService;
+    @Autowired
+    private MemberCardService memberCardService;
+    @Autowired
+    private MemberApplyService memberApplyService;
+    @Autowired
+    private MemberRechargerService memberRechargerService;
+    @Autowired
+    private SysUserService sysUserService;
 
     @Override
     @Transactional
@@ -90,7 +96,7 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         //search member info by id
         Member select = this.baseMapper.selectById(joinParm.getMemberId());
         //Renew member
-        MemberCard card = memberCardMapper.selectById(joinParm.getCardId());
+        MemberCard card = memberCardService.getById(joinParm.getCardId());
         Member member = new Member();
         member.setMemberId((joinParm.getMemberId()));
         member.setCardType(card.getTitle());
@@ -120,17 +126,21 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         memberApply.setMemberId(joinParm.getMemberId());
         memberApply.setPrice(card.getPrice());
         memberApply.setCreateTime(new Date());
-        memberApplyMapper.insert(memberApply);
+        memberApplyService.save(memberApply);
     }
 
     @Override
     @Transactional
     public void recharge(RechargeParm parm) {
+        Long userId = parm.getUserId();
+        SysUser user = sysUserService.getById(userId);
         //生成充值明细
         MemberRecharge recharge = new MemberRecharge();
         recharge.setMemberId(parm.getMemberId());
         recharge.setMoney(parm.getMoney());
-        boolean save = memberRechargeService.save(recharge);
+        recharge.setCreateTime(new Date());
+        recharge.setCreateUser(user.getName());
+        boolean save = memberRechargerService.save(recharge);
         if (save) {
             //Renew member account amount
             this.baseMapper.addMoney(parm);

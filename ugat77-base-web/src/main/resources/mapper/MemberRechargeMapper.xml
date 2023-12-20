@@ -3,5 +3,13 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.ugat77.web.member_recharge.mapper.MemberRechargeMapper">
-
+    <select id="getRechargeList" resultType="com.ugat77.web.member_recharge.entity.MemberRecharge">
+        SELECT mr.*,m.`name`,m.username FROM member_recharge as mr
+                                                 left join member as m  on m.member_id = mr.member_id
+    </select>
+    <select id="getRechargeByMember" parameterType="long" resultType="com.ugat77.web.member_recharge.entity.MemberRecharge">
+        SELECT mr.*,m.`name`,m.username FROM member_recharge as mr
+                                                 left join member as m  on m.member_id = mr.member_id
+        where m.member_id =#{memberId}
+    </select>
 </mapper>

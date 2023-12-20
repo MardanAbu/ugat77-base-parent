@@ -79,6 +79,10 @@ public class LoginController {
         HttpSession session = request.getSession();
         //获取验证吗
         String code = (String) session.getAttribute("code");
+        //判断验证吗过期
+        if (StringUtils.isNotEmpty(loginParm.getCode()) && StringUtils.isEmpty(code)){
+            return ResultUtils.error("The code has expired");
+        }
         //验证验证吗
         if (!code.equals(loginParm.getCode())) {
             return ResultUtils.error("Wrong code");
