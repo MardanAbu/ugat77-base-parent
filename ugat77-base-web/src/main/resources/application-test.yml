@@ -33,9 +33,9 @@ web:
 #jwt配置
 jwt:
   #颁发者
-  issuer: itmk
+  issuer: ugat77
   #秘钥
-  secret: com.itmk
+  secret: com.ugat77
   #30分钟过期
   expiration: 30
 

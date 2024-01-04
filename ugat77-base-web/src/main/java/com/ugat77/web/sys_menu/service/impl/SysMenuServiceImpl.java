@@ -30,20 +30,20 @@ public class SysMenuServiceImpl extends ServiceImpl<SysMenuMapper, SysMenu> impl
 
     @Override
     public List<SysMenu> getParent() {
-        //查询目录和菜单
+        //search catalogues and menus
         String[] type = {"0", "1"};
         List<String> strings = Arrays.asList(type);
-        //构造查询条件
+        //Constructing query conditions
         QueryWrapper<SysMenu> query = new QueryWrapper<>();
         query.lambda().in(SysMenu::getType,strings).orderByAsc(SysMenu::getOrderNum);
         List<SysMenu> menus = this.baseMapper.selectList(query);
-        //组装顶级菜单（默认）
+        //Assembling the top level menu (default)
         SysMenu menu = new SysMenu();
         menu.setMenuId(0L);
         menu.setParentId(-1L);
         menu.setTitle("Top Menu");
         menus.add(menu);
-        //组装树数据
+        //Assembly Tree Data
         return MakeMenuTree.makeTree(menus, -1L);
     }
 }

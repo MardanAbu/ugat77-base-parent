@@ -137,7 +137,7 @@ public class MemberController {
         return ResultUtils.success("Searching success",one);
     }
 
-    //查询会员卡列表
+    //search membership
     @GetMapping("/getCardList")
     public ResultVo getCardList(){
         QueryWrapper<MemberCard> query = new QueryWrapper<>();
@@ -153,7 +153,7 @@ public class MemberController {
         return  ResultUtils.success("Purchasing success!");
     }
 
-    //充值
+    //recharge
     @PostMapping("/recharge")
     public ResultVo recharge(@RequestBody RechargeParm parm){
         memberService.recharge(parm);

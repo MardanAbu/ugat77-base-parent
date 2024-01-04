@@ -48,7 +48,7 @@ public class LoginController {
         //存储验证码到session
         HttpSession session = request.getSession();
         session.setAttribute("code", text);
-        //生成图片
+        //generate img
         BufferedImage bufferedImage = defaultKaptcha.createImage(text);
         ByteArrayOutputStream outputStream = null;
         try {
@@ -93,7 +93,7 @@ public class LoginController {
         if (loginParm.getUserType().equals("1")) {//user
             //构造查询条件
             QueryWrapper<Member> query = new QueryWrapper<>();
-            query.lambda().eq(Member::getUsername, loginParm.getUsername()).eq(Member::getPrice, loginParm.getPassword());
+            query.lambda().eq(Member::getUsername, loginParm.getUsername()).eq(Member::getPassword, loginParm.getPassword());
             Member one = memberService.getOne(query);
             if (one == null) {
                 return ResultUtils.error("Incorrect username or password");
